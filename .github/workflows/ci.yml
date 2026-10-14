@@ -28,3 +28,6 @@ jobs:
       - run: python -m solid_workbook all
         env:
           PYTHONPATH: src
+      - run: python -m solid_workbook srp-lab
+        env:
+          PYTHONPATH: src

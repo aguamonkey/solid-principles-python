@@ -3,6 +3,7 @@
 import argparse
 
 from . import dip, isp, lsp, ocp, srp
+from .reading_desk.lab import run_lab
 
 
 class LocalReports:
@@ -19,6 +20,9 @@ class LocalNotifier:
 
 
 def run(principle: str) -> None:
+    if principle == "srp-lab":
+        run_lab()
+        return
     if principle in ("all", "srp"):
         notebook = isp.MemoryNotebook()
         reading = srp.record_reading(
@@ -51,7 +55,7 @@ def main() -> None:
         "principle",
         nargs="?",
         default="all",
-        choices=("all", "srp", "ocp", "lsp", "isp", "dip"),
+        choices=("all", "srp", "ocp", "lsp", "isp", "dip", "srp-lab"),
     )
     run(parser.parse_args().principle)
 

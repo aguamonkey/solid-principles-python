@@ -1,6 +1,6 @@
 # Single Responsibility · Field notebook
 
-[Repository](../../README.md) · [Exercise](EXERCISE.md) · [Solution notes](SOLUTION.md) · [Interview](INTERVIEW.md)
+[Repository](../../README.md) · [Exercise](EXERCISE.md) · [Solution notes](SOLUTION.md) · [Interview](INTERVIEW.md) · [Recovery lab](feature/README.md)
 
 Reading validation, report formatting and storage respond to different changes.
 
@@ -22,6 +22,6 @@ State the consumer’s promise, point to its implementation, then name the test 
 
 ## Progression and limits
 
-This is a runnable foundation with behavioural tests. A later feature stage can add failure recovery and more consumers; a system stage can define migration, versioning, concurrency and durable supplier contracts. Those advanced stages are not implemented by this initial milestone.
+This is a runnable foundation with behavioural tests. The separate [recovery lab](feature/README.md) adds source failure retention, independent edit rules, acknowledgement checks and snapshot outcomes. Its edit-ceiling exercise differs from this foundation’s station-name exercise. A later feature stage can add failure recovery and more consumers; a system stage can define migration, versioning, concurrency and durable supplier contracts. Those advanced stages are not implemented by this initial milestone.
 
 No number of traits, protocols, files or classes proves SOLID. The chosen change pressure and consumer behaviour justify the boundary. These trusted, synchronous examples cannot establish universal substitutability or production safety.
