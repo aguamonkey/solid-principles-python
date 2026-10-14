@@ -19,9 +19,9 @@ Start without notes in the language you know best. Then explain the same questio
 | Stage | Current status | Next pressure |
 | --- | --- | --- |
 | Foundation | All five source examples, CLI demos, tests and study documents | Complete an exercise and justify the boundary |
-| Reliable feature | [SRP recovery lab](../lessons/1-srp/feature/README.md); other lessons remain foundations | Failure retention, separate edit/source domains and uncertain acknowledgements |
-| System contracts | Not implemented | Versioning, durable identity, concurrency and safe migration |
+| Reliable feature | [SRP recovery](../lessons/1-srp/feature/README.md) and [OCP compatibility](../lessons/2-ocp/feature/README.md); other lessons remain foundations | Failure retention, separate edit/source domains and uncertain acknowledgements |
+| System contracts | OCP introduces exact schema compatibility; broader system work remains future | Durable identity, concurrency and safe migration |
 
-Run the SRP recovery walkthrough, then attempt its edit-ceiling exercise. The next feature milestone can grow OCP under one concrete extension/compatibility pressure. These are reasoning scopes, not automatic job titles.
+Run the SRP recovery walkthrough, then attempt its edit-ceiling exercise. Next, run the OCP compatibility lab and attempt text v2. The next feature milestone can deepen LSP’s replacement contracts. These are reasoning scopes, not automatic job titles.
 
 For interview practice, connect a decision to source, a test and an alternative. This workbook complements language/platform study and examples from your real work; it cannot establish job readiness by itself.

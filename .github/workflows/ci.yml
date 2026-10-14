@@ -31,3 +31,6 @@ jobs:
       - run: python -m solid_workbook srp-lab
         env:
           PYTHONPATH: src
+      - run: python -m solid_workbook ocp-lab
+        env:
+          PYTHONPATH: src
