@@ -4,9 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "solid-principles-workbook"
-version = "0.1.0"
-description = "A Python workbook for testing five SOLID design decisions"
+version = "1.0.0"
+description = "Field Notebook: a Python backend and five SOLID study progressions"
 requires-python = ">=3.11"
+dependencies = ["fastapi==0.143.1", "uvicorn==0.54.0"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

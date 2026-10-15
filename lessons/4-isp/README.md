@@ -20,8 +20,12 @@ Run `PYTHONPATH=src python -m solid_workbook isp`. The CLI is composition, not t
 
 State the consumer’s promise, point to its implementation, then name the test that demonstrates it. Try the exercise before reading solution notes.
 
+## Backend progression
+
+Follow the [system study](system/README.md) into the working application, with source, tests, an exercise and interview prompts.
+
 ## Progression and limits
 
-This is a runnable foundation with behavioural tests. A later feature stage can add failure recovery and more consumers; a system stage can define migration, versioning, concurrency and durable supplier contracts. Those advanced stages are not implemented by this initial milestone.
+This is a runnable foundation with behavioural tests. A later feature stage can add failure recovery and more consumers; a system stage can define migration, versioning, concurrency and durable supplier contracts. The linked backend track now supplies the system-level example; broader production requirements remain explicit in its decisions.
 
 No number of traits, protocols, files or classes proves SOLID. The chosen change pressure and consumer behaviour justify the boundary. These trusted, synchronous examples cannot establish universal substitutability or production safety.

@@ -1,48 +1,76 @@
-# SOLID principles · Python
+# Field Notebook · SOLID with Python
 
-A workbook for explaining five design decisions through runnable local examples, behavioural tests and small changes. Start with one lesson, run it, and attempt its exercise before reading the solution.
+A working research-reading backend and a study path through five design decisions. Start with small command-line examples, explore failure and compatibility labs, then follow the same ideas into a FastAPI application with SQLite persistence.
 
-| Lesson | Setting | Design question |
-| --- | --- | --- |
-| [01 · Single Responsibility](lessons/1-srp/README.md) | Field notebook | Where should this change belong? |
-| [02 · Open/Closed](lessons/2-ocp/README.md) | Export bench | Which algorithm stays stable when another format is added? |
-| [03 · Liskov Substitution](lessons/3-lsp/README.md) | Archive shelf | Does the replacement honour the caller’s promise? |
-| [04 · Interface Segregation](lessons/4-isp/README.md) | Station board | Which operations does this consumer need? |
-| [05 · Dependency Inversion](lessons/5-dip/README.md) | Publication desk | Can suppliers change independently of policy? |
+Record observations, replay a request safely, browse bounded pages, export a page and process durable receipt intent. The backend exposes interactive API documentation at `/docs`; it creates local receipt previews, not emails.
 
-## Run and verify
+![The running Field Notebook API workbench](docs/images/api-workbench.png)
 
-Use Python 3.11 or newer; check your interpreter version before creating the virtual environment. Runtime examples use only the standard library. Ruff and mypy are pinned development tools. CI checks Python 3.11 and 3.12.
+Actual Chromium capture of the local API documentation.
+
+## Run the application
+
+Use **Python 3.11 or newer**. Check your interpreter version first; some macOS installations still default to an older Python.
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements-dev.txt
-PYTHONPATH=src python -m solid_workbook all
+PYTHONPATH=src python -m solid_workbook.backend --database data/notebook.sqlite3
+```
 
+Open [the API workbench](http://127.0.0.1:8000/docs). The command binds to localhost. The database is created on first run and survives server restarts. Use `--memory` instead of `--database` for an ephemeral comparison with the same API contracts. Runtime dependencies are pinned in [requirements.txt](requirements.txt); development checks are pinned separately.
+
+```bash
+curl -i http://127.0.0.1:8000/readings \
+  -H 'Content-Type: application/json' \
+  -H 'Idempotency-Key: ridge-001' \
+  -d '{"identity":"ridge-001","station":"North ridge","kelvin":281.25}'
+
+curl 'http://127.0.0.1:8000/readings?limit=10'
+curl 'http://127.0.0.1:8000/export?format=json&limit=10'
+curl -X POST http://127.0.0.1:8000/outbox/process
+```
+
+The first intake returns **201**. Repeat the same key/content for **200 replayed**; change the intent under that key or reuse a reading identity under a new key for **409 conflict**. Invalid input returns **422**. A storage acknowledgement failure returns **503 unconfirmed**, so retry using the same identity, key and content. Acceptance and receipt processing are separate operations.
+
+## Choose a study route
+
+- New to Python: [Python orientation](docs/PYTHON_START.md), then the first foundation.
+- Studying SOLID: [learning path](docs/LEARNING_PATH.md), examples, exercises and separate solutions.
+- Preparing senior-level discussions: [architecture](docs/ARCHITECTURE.md), [backend walkthrough](docs/BACKEND.md), [decision records](docs/decisions/README.md) and [interview rehearsal](docs/INTERVIEW_PREP.md).
+
+| Principle | Foundation | Reliable behaviour | Backend/system study |
+| --- | --- | --- | --- |
+| SRP | [Field notebook](lessons/1-srp/README.md) | [Recovery lab](lessons/1-srp/feature/README.md) | [Ownership and intake](lessons/1-srp/system/README.md) |
+| OCP | [Export bench](lessons/2-ocp/README.md) | [Version compatibility](lessons/2-ocp/feature/README.md) | [Export strategies](lessons/2-ocp/system/README.md) |
+| LSP | [Archive shelf](lessons/3-lsp/README.md) | [Catalogue contracts](lessons/3-lsp/feature/README.md) | [Interchangeable repositories](lessons/3-lsp/system/README.md) |
+| ISP | [Station board](lessons/4-isp/README.md) | [Read-only backend consumers](lessons/4-isp/system/README.md) | [Consumer-owned ports](lessons/4-isp/system/README.md) |
+| DIP | [Publication desk](lessons/5-dip/README.md) | [Uncertain processing outcomes](lessons/5-dip/system/README.md) | [Composition and durable intent](lessons/5-dip/system/README.md) |
+
+## Verify
+
+```bash
 ruff check .
 ruff format --check .
 mypy
-PYTHONPATH=src python -m unittest discover -s tests -v
+PYTHONPATH=src python -m unittest discover -s tests
 python scripts/check_docs.py
+python scripts/smoke_backend.py
+PYTHONPATH=src python -m solid_workbook all
+PYTHONPATH=src python -m solid_workbook srp-lab
+PYTHONPATH=src python -m solid_workbook ocp-lab
+PYTHONPATH=src python -m solid_workbook lsp-lab
 ```
 
-Replace `all` with `srp`, `ocp`, `lsp`, `isp` or `dip` to focus on one demonstration. Run `PYTHONPATH=src python -m solid_workbook srp-lab` for the [SRP recovery walkthrough](lessons/1-srp/feature/README.md). Run `PYTHONPATH=src python -m solid_workbook ocp-lab` for the [OCP compatibility walkthrough](lessons/2-ocp/feature/README.md). Commands work from the repository root. Tests run separate fixtures without contacting services. There is no browser app in this initial milestone.
+**138 tests** cover the small examples, recovery/compatibility/catalogue labs, the same memory/SQLite repository contracts, real SQLite rollback and concurrency, persistent retry state and the same HTTP workflows with both adapters. Strict mypy checks source contracts; Ruff enforces formatting and lint. CI repeats checks on Python 3.11 and 3.12. The documentation checker validates local inline link targets, excluding external URLs and heading fragments.
 
-## How to study
+## Scope and useful tradeoffs
 
-Follow the [study path](docs/LEARNING_PATH.md). Each lesson links to actual source, tests, an exercise, separate solution notes and interview prompts. The settings use runtime input validation, frozen data and structural protocols rather than translating another language mechanically.
+This is a complete local reference workflow for learning backend design. Observations are immutable and append-only. Reading, key binding and receipt intent commit together. Preview delivery is separately idempotent in the bundled sink; this does not prove exactly-once delivery to an external service.
 
-This workbook is deliberately smaller than the mature Swift/TypeScript workbooks. SRP includes a recovery lab and OCP includes a versioned export compatibility lab. LSP/ISP/DIP remain foundations. Interactive applications and broader system labs remain future work. The [progression](docs/LEARNING_PATH.md) identifies the next steps and keeps that scope visible.
+This application has no user accounts, public deployment, background scheduler, queue leases, dead-letter policy or backup automation. Processing is explicit, one event per request. Pages and fields are bounded, but raw HTTP body size is not capped by this application. Cursor paging is append-only traversal, not a fixed multi-request database snapshot. These boundaries are discussed in the decisions rather than hidden behind interfaces.
 
-## Cross-language practice
-
-Compare one design question across [Swift](https://github.com/aguamonkey/SOLID-Principles-with-Swift), [TypeScript](https://github.com/aguamonkey/solid-principles-typescript), [Rust](https://github.com/aguamonkey/solid-principles-rust). First explain the promise, then explain how this language changes its implementation. Matching class names is not the study goal.
-
-## Evidence and limits
-
-Fifty-nine unittest cases cover runtime validation, extension, snapshot behaviour, read-only fixtures and partial publication failure. Strict mypy checks the source contracts; protocol annotations do not enforce those contracts at runtime.
-
-The link checker covers local inline Markdown targets and excludes external URLs and heading fragments. It is not a full Markdown parser. The SRP lab adds failed-refresh retention, acknowledgement identity, lost-update acknowledgement and snapshot-failure evidence. These examples have no durable storage, network, authentication, asynchronous execution or exactly-once guarantees. Two snapshot samples do not prove behaviour for every future implementation. Rust Unavailable is permitted by the manifest contract; Python snapshot exceptions propagate. Those contracts are intentionally explicit.
+Compare the same questions in [Swift](https://github.com/aguamonkey/SOLID-Principles-with-Swift), [TypeScript](https://github.com/aguamonkey/solid-principles-typescript) and [Rust](https://github.com/aguamonkey/solid-principles-rust). Each language has its own application setting and implementation choices.
 
 [Contributing](CONTRIBUTING.md) · [MIT licence](LICENSE)

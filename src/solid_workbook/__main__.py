@@ -3,6 +3,7 @@
 import argparse
 
 from . import dip, isp, lsp, ocp, srp
+from .catalogue_lab.lab import run_lab as run_catalogue_lab
 from .export_lab.lab import run_lab as run_export_lab
 from .reading_desk.lab import run_lab
 
@@ -21,6 +22,9 @@ class LocalNotifier:
 
 
 def run(principle: str) -> None:
+    if principle == "lsp-lab":
+        run_catalogue_lab()
+        return
     if principle == "ocp-lab":
         run_export_lab()
         return
@@ -59,7 +63,17 @@ def main() -> None:
         "principle",
         nargs="?",
         default="all",
-        choices=("all", "srp", "ocp", "lsp", "isp", "dip", "srp-lab", "ocp-lab"),
+        choices=(
+            "all",
+            "srp",
+            "ocp",
+            "lsp",
+            "isp",
+            "dip",
+            "srp-lab",
+            "ocp-lab",
+            "lsp-lab",
+        ),
     )
     run(parser.parse_args().principle)
 

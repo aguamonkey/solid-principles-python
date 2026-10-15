@@ -18,6 +18,7 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       - run: python -m pip install -r requirements-dev.txt
+      - run: python -m pip check
       - run: ruff check .
       - run: ruff format --check .
       - run: mypy
@@ -34,3 +35,10 @@ jobs:
       - run: python -m solid_workbook ocp-lab
         env:
           PYTHONPATH: src
+      - run: python -m solid_workbook lsp-lab
+        env:
+          PYTHONPATH: src
+      - run: python -m solid_workbook.backend --help
+        env:
+          PYTHONPATH: src
+      - run: python scripts/smoke_backend.py

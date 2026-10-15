@@ -1,27 +1,19 @@
-# One question, one change, one test
+# Foundation → reliable feature → system contracts
 
-[Repository](../README.md)
+[Repository](../README.md) · [Python orientation](PYTHON_START.md) · [Interview practice](INTERVIEW_PREP.md)
 
-1. Pick a lesson. Read its guide and source for ten minutes.
-2. Run its CLI demonstration. Explain the result you expect before running it.
-3. Answer one interview prompt aloud before reading answer notes.
-4. In a separate coding session, attempt the exercise and add a test for behaviour that matters.
-5. Write three lines: what changed, what stayed stable, and what limitation remains.
+Pick one principle at a time. Read for ten minutes, run its example for ten, then explain it aloud for ten. Attempt coding exercises in a separate session, before opening their solution notes.
 
-Study SRP → OCP → LSP → ISP → DIP first. Revisit your weakest example rather than treating completion as a score.
+| Principle | Start | Explore failure or change | Follow into the backend |
+| --- | --- | --- | --- |
+| SRP | [Foundation](../lessons/1-srp/README.md) | [Recovery lab](../lessons/1-srp/feature/README.md) | [Intake ownership](../lessons/1-srp/system/README.md) |
+| OCP | [Foundation](../lessons/2-ocp/README.md) | [Compatibility lab](../lessons/2-ocp/feature/README.md) | [Export extension](../lessons/2-ocp/system/README.md) |
+| LSP | [Foundation](../lessons/3-lsp/README.md) | [Catalogue lab](../lessons/3-lsp/feature/README.md) | [Repository contracts](../lessons/3-lsp/system/README.md) |
+| ISP | [Foundation](../lessons/4-isp/README.md) | [Bounded reader workflow](../lessons/4-isp/system/README.md) | [Port ownership](../lessons/4-isp/system/README.md) |
+| DIP | [Foundation](../lessons/5-dip/README.md) | [Processing outcomes](../lessons/5-dip/system/README.md) | [Composition and durable intent](../lessons/5-dip/system/README.md) |
 
-## Compare languages after recall
+These describe increasing responsibility, not automatic job titles. Foundation asks whether a boundary helps. Feature ownership asks what happens when something fails. System ownership defines identity, concurrency, persistence and migration promises, then tests their practical limits.
 
-Start without notes in the language you know best. Then explain the same question in Python. Ask what a protocol annotation can check and what runtime input still needs validation. Use a different fixture or change request to avoid memorising identical code.
+After a session, write: what changed, what stayed stable, and what risk remains? Revisit without notes. Compare the same question in Swift or TypeScript after recall, rather than translating classes mechanically.
 
-## Next progression
-
-| Stage | Current status | Next pressure |
-| --- | --- | --- |
-| Foundation | All five source examples, CLI demos, tests and study documents | Complete an exercise and justify the boundary |
-| Reliable feature | [SRP recovery](../lessons/1-srp/feature/README.md) and [OCP compatibility](../lessons/2-ocp/feature/README.md); other lessons remain foundations | Failure retention, separate edit/source domains and uncertain acknowledgements |
-| System contracts | OCP introduces exact schema compatibility; broader system work remains future | Durable identity, concurrency and safe migration |
-
-Run the SRP recovery walkthrough, then attempt its edit-ceiling exercise. Next, run the OCP compatibility lab and attempt text v2. The next feature milestone can deepen LSP’s replacement contracts. These are reasoning scopes, not automatic job titles.
-
-For interview practice, connect a decision to source, a test and an alternative. This workbook complements language/platform study and examples from your real work; it cannot establish job readiness by itself.
+For a recruiter walkthrough, run the API, demonstrate an exact replay and a conflict, then show one transaction test and one shared adapter contract. Explain why a real email supplier would require a separate idempotency agreement.
